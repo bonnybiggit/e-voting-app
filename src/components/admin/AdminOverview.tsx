@@ -15,7 +15,6 @@ import {
   CartesianGrid,
   LineChart,
   Line,
-  ResponsiveContainer,
 } from "recharts";
 import {
   Users,
@@ -29,7 +28,6 @@ import {
   adminStats,
   turnoutByFaculty,
   dailyTurnout,
-  elections,
 } from "@/lib/dummy-data";
 
 const statCards = [

@@ -23,7 +23,7 @@ export default function LoginPage() {
 
         <div className="relative">
           <blockquote className="text-2xl font-extrabold leading-snug tracking-tight mb-4">
-            "Your Vote is Your Voice. Make It Count."
+            &quot;Your Vote is Your Voice. Make It Count.&quot;
           </blockquote>
           <p className="text-sm text-white/70 leading-relaxed max-w-sm">
             {UNIVERSITY_NAME} — Official Electronic Voting System. Secure,

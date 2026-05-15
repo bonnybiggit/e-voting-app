@@ -35,8 +35,6 @@ export function StudentsManager() {
       s.department.toLowerCase().includes(search.toLowerCase())
   );
 
-  const votedCount = students.filter((s) => s.hasVoted).length;
-
   return (
     <div className="flex flex-col gap-6">
       {/* Summary cards */}

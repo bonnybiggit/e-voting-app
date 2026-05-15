@@ -23,7 +23,7 @@ export default function DashboardPage() {
 
   const selectedElection = elections.find((e) => e.id === selectedElectionId);
 
-  const handleVoteConfirm = (candidate: Candidate) => {
+  const handleVoteConfirm = () => {
     setVotedElections((prev) => new Set(prev).add(selectedElectionId));
     setVoteCandidate(null);
   };
