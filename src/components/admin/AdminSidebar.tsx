@@ -91,12 +91,12 @@ export function AdminSidebar({ activeTab, onTabChange }: AdminSidebarProps) {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Live Results">
-                  <Link href="/results/el-001">
+                <Link href="/results/el-001">
+                  <SidebarMenuButton tooltip="Live Results">
                     <BarChart3 className="h-4 w-4" />
                     <span>Live Results</span>
-                  </Link>
-                </SidebarMenuButton>
+                  </SidebarMenuButton>
+                </Link>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
