@@ -1,6 +1,7 @@
 import { Candidate, ElectionMetrics, Position, Voter } from './types';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+// Use local backend when developing, and relative /api when deployed on Netlify
+const API_BASE_URL = import.meta.env.PROD ? '/api' : 'http://localhost:5000/api';
 
 export const mockPositions: Position[] = [
   { id: '1', title: 'President' },
