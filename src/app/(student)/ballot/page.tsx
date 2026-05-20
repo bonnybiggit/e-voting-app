@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Timer, UserCircle, CheckCircle2, Info, Loader2 } from 'lucide-react';
+import { Timer, UserCircle, CheckCircle2, Info, Loader2, LogOut } from 'lucide-react';
 import { mockPositions, api } from '@/lib/mock-api';
 
 export default function BallotPage() {
@@ -13,6 +13,15 @@ export default function BallotPage() {
   const [timeLeft, setTimeLeft] = useState(300); // 5 minutes in seconds
   const [showManifesto, setShowManifesto] = useState<string | null>(null);
   const [candidates, setCandidates] = useState<any[]>([]);
+
+  const voterMatric = localStorage.getItem('voterMatric') || 'Unknown';
+
+  const handleLogout = () => {
+    if (window.confirm('Are you sure you want to log out? Your current selections will be lost.')) {
+      localStorage.removeItem('voterMatric');
+      navigate('/');
+    }
+  };
 
   useEffect(() => {
     // Fetch live candidates
@@ -66,12 +75,21 @@ export default function BallotPage() {
           </div>
           <div>
             <p className="text-xs font-bold text-slate-400 uppercase">Voter ID</p>
-            <p className="text-sm font-semibold text-slate-900">ACE/****/001</p>
+            <p className="text-sm font-semibold text-slate-900">{voterMatric}</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 bg-primary/10 px-3 py-1.5 rounded-full">
-          <Timer className="w-4 h-4 text-primary animate-pulse" />
-          <span className="text-sm font-bold text-primary tabular-nums">{formatTime(timeLeft)}</span>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 bg-primary/10 px-3 py-1.5 rounded-full">
+            <Timer className="w-4 h-4 text-primary animate-pulse" />
+            <span className="text-sm font-bold text-primary tabular-nums">{formatTime(timeLeft)}</span>
+          </div>
+          <button 
+            onClick={handleLogout}
+            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"
+            title="Log out securely"
+          >
+            <LogOut className="w-5 h-5" />
+          </button>
         </div>
       </header>
 
