@@ -1,24 +1,36 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 import { Timer, UserCircle, CheckCircle2, Info, Loader2 } from 'lucide-react';
-import { mockPositions, mockCandidates, api } from '@/lib/mock-api';
+import { mockPositions, api } from '@/lib/mock-api';
 
 export default function BallotPage() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [selectedVotes, setSelectedVotes] = useState<Record<string, string>>({});
   const [showConfirm, setShowConfirm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(3600); // 1 hour in seconds
+  const [timeLeft, setTimeLeft] = useState(300); // 5 minutes in seconds
   const [showManifesto, setShowManifesto] = useState<string | null>(null);
+  const [candidates, setCandidates] = useState<any[]>([]);
 
   useEffect(() => {
+    // Fetch live candidates
+    api.getCandidates().then(setCandidates).catch(console.error);
+
     const timer = setInterval(() => {
-      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          alert('Your voting session has expired! Please log in again.');
+          navigate('/');
+          return 0;
+        }
+        return prev - 1;
+      });
     }, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [navigate]);
 
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60);
@@ -34,7 +46,7 @@ export default function BallotPage() {
     setSubmitting(true);
     try {
       await api.submitBallot(selectedVotes);
-      router.push('/success');
+      navigate('/?success=1');
     } catch (err) {
       alert('Error submitting ballot');
     } finally {
@@ -42,7 +54,7 @@ export default function BallotPage() {
     }
   };
 
-  const currentManifesto = mockCandidates.find(c => c.id === showManifesto);
+  const currentManifesto = candidates.find(c => c.id === showManifesto);
 
   return (
     <div className="flex-1 flex flex-col relative">
@@ -73,7 +85,7 @@ export default function BallotPage() {
             </div>
 
             <div className="space-y-4">
-              {mockCandidates
+              {candidates
                 .filter((c) => c.positionId === position.id)
                 .map((candidate) => (
                   <div
@@ -123,11 +135,20 @@ export default function BallotPage() {
       </div>
 
       {/* Bottom Action Bar */}
-      <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto p-6 bg-gradient-to-t from-white via-white to-white/0 pointer-events-none">
+      <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto p-6 bg-gradient-to-t from-white via-white to-white/0 pointer-events-none flex gap-3">
+        {Object.keys(selectedVotes).length > 0 && (
+          <button
+            onClick={() => setSelectedVotes({})}
+            className="pointer-events-auto bg-white border-2 border-red-100 hover:border-red-200 hover:bg-red-50 text-red-500 font-bold px-6 py-4 rounded-2xl shadow-lg transition-all active:scale-[0.98] flex items-center justify-center whitespace-nowrap"
+            title="Clear All Selections"
+          >
+            Clear All
+          </button>
+        )}
         <button
           onClick={() => setShowConfirm(true)}
           disabled={Object.keys(selectedVotes).length === 0}
-          className="w-full pointer-events-auto bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-2xl shadow-xl shadow-primary/20 transition-all disabled:opacity-50 disabled:shadow-none active:scale-[0.98]"
+          className="w-full flex-1 pointer-events-auto bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-2xl shadow-xl shadow-primary/20 transition-all disabled:opacity-50 disabled:shadow-none active:scale-[0.98]"
         >
           Submit Ballot ({Object.keys(selectedVotes).length}/{mockPositions.length})
         </button>

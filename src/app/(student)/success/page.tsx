@@ -1,18 +1,18 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 import { CheckCircle2, ShieldCheck, ArrowRight } from 'lucide-react';
 
 export default function SuccessPage() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [countdown, setCountdown] = useState(10);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
-          router.push('/');
+          navigate('/');
           return 0;
         }
         return prev - 1;
@@ -39,7 +39,7 @@ export default function SuccessPage() {
 
       <div className="w-full space-y-4">
         <button
-          onClick={() => router.push('/')}
+          onClick={() => navigate('/')}
           className="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl shadow-xl shadow-slate-200 transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
         >
           Close Portal <ArrowRight className="w-5 h-5" />

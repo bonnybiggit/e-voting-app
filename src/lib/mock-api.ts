@@ -1,6 +1,6 @@
 import { Candidate, ElectionMetrics, Position, Voter } from './types';
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+const API_BASE_URL = 'http://localhost:5000/api';
 
 export const mockPositions: Position[] = [
   { id: '1', title: 'President' },
@@ -16,33 +16,91 @@ export const mockCandidates: Candidate[] = [
   { id: 'c5', positionId: '3', fullName: 'Tunde Bakare', department: 'English', manifesto: 'Bridging the gap between students and management.' },
 ];
 
-
-export const mockVoters: Voter[] = [
-  { matricNumber: 'ACE/2021/001', fullName: 'John Doe', department: 'Computer Science', status: 'ELIGIBLE' },
-  { matricNumber: 'ACE/2021/002', fullName: 'Jane Smith', department: 'Mathematics', status: 'VOTED' },
-];
-
 export const api = {
   login: async (matric: string, pin: string) => {
-    await delay(1500);
-    if (matric.startsWith('ACE/')) {
-      return { success: true, voter: mockVoters[0] };
-    }
-    throw new Error('Invalid credentials');
+    const res = await fetch(`${API_BASE_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ matricNumber: matric, pin })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Login failed');
+    
+    // Store logged in user matric in localStorage
+    localStorage.setItem('voterMatric', data.voter.matricNumber);
+    return data;
   },
+  
+  register: async (fullName: string, matric: string, department: string, pin: string) => {
+    const res = await fetch(`${API_BASE_URL}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fullName, department, matricNumber: matric, pin })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Registration failed');
+    return data;
+  },
+  
   adminLogin: async (username: string, pass: string) => {
-    await delay(1500);
+    await new Promise(r => setTimeout(r, 1000));
     if (username === 'admin' && pass === 'password') {
       return { success: true };
     }
     throw new Error('Unauthorized');
   },
-  submitBallot: async (votes: Record<string, string>) => {
-    await delay(2000);
-    return { success: true, ballotId: Math.random().toString(36).substr(2, 9) };
+  
+  adminGetVoters: async () => {
+    const res = await fetch(`${API_BASE_URL}/admin/voters`);
+    if (!res.ok) throw new Error('Failed to fetch voters');
+    return await res.json();
   },
+
+  getCandidates: async () => {
+    const res = await fetch(`${API_BASE_URL}/admin/candidates`);
+    if (!res.ok) throw new Error('Failed to fetch candidates');
+    return await res.json();
+  },
+
+  adminCreateCandidate: async (candidate: any) => {
+    const res = await fetch(`${API_BASE_URL}/admin/candidates`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(candidate)
+    });
+    if (!res.ok) throw new Error('Failed to create candidate');
+    return await res.json();
+  },
+
+  adminUpdateCandidate: async (id: string, candidate: any) => {
+    const res = await fetch(`${API_BASE_URL}/admin/candidates/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(candidate)
+    });
+    if (!res.ok) throw new Error('Failed to update candidate');
+    return await res.json();
+  },
+
+  adminDeleteCandidate: async (id: string) => {
+    const res = await fetch(`${API_BASE_URL}/admin/candidates/${id}`, { method: 'DELETE' });
+    if (!res.ok) throw new Error('Failed to delete candidate');
+    return await res.json();
+  },
+  
+  submitBallot: async (votes: Record<string, string>) => {
+    const matricNumber = localStorage.getItem('voterMatric');
+    const res = await fetch(`${API_BASE_URL}/vote/submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ matricNumber, votes })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Voting failed');
+    return data;
+  },
+  
   getElectionMetrics: async (): Promise<ElectionMetrics> => {
-    await delay(500);
     return {
       totalEligible: 5000,
       totalCast: 3240,
@@ -50,8 +108,8 @@ export const api = {
       status: 'ACTIVE',
     };
   },
+  
   getResults: async () => {
-    await delay(800);
     return mockCandidates.map(c => ({
       candidateId: c.id,
       votes: Math.floor(Math.random() * 1000)

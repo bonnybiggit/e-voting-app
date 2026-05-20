@@ -1,16 +1,17 @@
 'use client';
 
 import React from 'react';
-import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, Users, Settings, LogOut, ShieldCheck, Activity } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { LayoutDashboard, Users, Settings, LogOut, ShieldCheck, Activity, UserSquare2 } from 'lucide-react';
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
-  const router = useRouter();
+  const location = useLocation();
+  const pathname = location.pathname;
+  const navigate = useNavigate();
   const isLoginPage = pathname === '/admin';
 
   if (isLoginPage) return <>{children}</>;
@@ -18,6 +19,7 @@ export default function AdminLayout({
   const menuItems = [
     { name: 'Dashboard', icon: LayoutDashboard, path: '/admin/dashboard' },
     { name: 'Roster Management', icon: Users, path: '/admin/dashboard?tab=roster' },
+    { name: 'Candidates', icon: UserSquare2, path: '/admin/dashboard?tab=candidates' },
     { name: 'Election Controls', icon: Settings, path: '/admin/dashboard?tab=controls' },
   ];
 
@@ -41,7 +43,7 @@ export default function AdminLayout({
           {menuItems.map((item) => (
             <button
               key={item.name}
-              onClick={() => router.push(item.path)}
+              onClick={() => navigate(item.path)}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all group ${
                 pathname + (window.location.search || '') === item.path
                   ? 'bg-primary text-white shadow-lg shadow-primary/20'
@@ -56,7 +58,7 @@ export default function AdminLayout({
 
         <div className="p-4 border-t border-white/5">
           <button 
-            onClick={() => router.push('/admin')}
+            onClick={() => navigate('/admin')}
             className="w-full flex items-center gap-3 px-4 py-3 text-white/60 hover:text-white hover:bg-white/5 rounded-xl transition-all"
           >
             <LogOut className="w-5 h-5" />

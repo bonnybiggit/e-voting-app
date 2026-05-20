@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,7 +9,7 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 export function LoginForm() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ matric: "", password: "" });
@@ -25,7 +25,7 @@ export function LoginForm() {
     await new Promise((r) => setTimeout(r, 1500));
     setLoading(false);
     toast.success("Login successful! Sending OTP...");
-    router.push("/verify-otp");
+    navigate("/verify-otp");
   };
 
   return (

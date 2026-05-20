@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Shield, Zap, BarChart3 } from "lucide-react";
@@ -51,7 +51,7 @@ export function HeroSection() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-            <Link href="/login">
+            <Link="/login">
               <Button
                 size="lg"
                 className="w-full bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/30 sm:w-auto"
@@ -60,7 +60,7 @@ export function HeroSection() {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
-            <Link href="/results/el-001">
+            <Link="/results/el-001">
               <Button
                 size="lg"
                 variant="outline"

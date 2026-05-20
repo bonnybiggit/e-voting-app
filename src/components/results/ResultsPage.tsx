@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -72,7 +72,7 @@ export function ResultsPage({ election }: ResultsPageProps) {
       {/* Header */}
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/90 backdrop-blur-md">
         <div className="page-container flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 font-bold text-primary">
+          <Link="/" className="flex items-center gap-2 font-bold text-primary">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white">
               <Vote className="h-4 w-4" />
             </div>
@@ -89,7 +89,7 @@ export function ResultsPage({ election }: ResultsPageProps) {
               Live Results
             </Badge>
             <ThemeToggle />
-            <Link href="/">
+            <Link="/">
               <Button variant="outline" size="sm">
                 <ArrowLeft className="mr-1.5 h-3.5 w-3.5" />
                 Home

@@ -26,7 +26,7 @@ import { elections } from "@/lib/dummy-data";
 import { formatDate, calcPercentage } from "@/lib/utils";
 import { Plus, Calendar, Users, Eye, Pencil } from "lucide-react";
 import { toast } from "sonner";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
 const statusConfig = {
   active: "bg-success/15 text-success border-success/30",
@@ -179,7 +179,7 @@ export function ElectionsManager() {
                 </div>
 
                 <div className="flex gap-2 mt-4">
-                  <Link href={`/results/${election.id}`}>
+                  <Link={`/results/${election.id}`}>
                     <Button variant="outline" size="sm">
                       <Eye className="mr-1.5 h-3.5 w-3.5" />
                       View Results

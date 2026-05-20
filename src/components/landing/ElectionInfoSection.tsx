@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -113,7 +113,7 @@ export function ElectionInfoSection() {
                   {/* CTA */}
                   <div className="mt-auto pt-2">
                     {election.status === "active" ? (
-                      <Link href="/login">
+                      <Link="/login">
                         <Button
                           size="sm"
                           className="w-full bg-primary text-white hover:bg-primary/90"
@@ -123,7 +123,7 @@ export function ElectionInfoSection() {
                         </Button>
                       </Link>
                     ) : election.status === "closed" ? (
-                      <Link href={`/results/${election.id}`}>
+                      <Link={`/results/${election.id}`}>
                         <Button size="sm" variant="outline" className="w-full">
                           View Results
                         </Button>

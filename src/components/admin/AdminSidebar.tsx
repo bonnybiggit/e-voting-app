@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
@@ -43,7 +43,7 @@ export function AdminSidebar({ activeTab, onTabChange }: AdminSidebarProps) {
   return (
     <Sidebar variant="sidebar" collapsible="icon">
       <SidebarHeader className="px-4 py-4">
-        <Link href="/" className="flex items-center gap-2.5">
+        <Link="/" className="flex items-center gap-2.5">
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
             <Vote className="h-4 w-4" />
           </div>
@@ -91,7 +91,7 @@ export function AdminSidebar({ activeTab, onTabChange }: AdminSidebarProps) {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <Link href="/results/el-001">
+                <Link="/results/el-001">
                   <SidebarMenuButton tooltip="Live Results">
                     <BarChart3 className="h-4 w-4" />
                     <span>Live Results</span>
@@ -128,7 +128,7 @@ export function AdminSidebar({ activeTab, onTabChange }: AdminSidebarProps) {
               admin@futa.edu.ng
             </p>
           </div>
-          <Link href="/login" className="group-data-[collapsible=icon]:hidden">
+          <Link="/login" className="group-data-[collapsible=icon]:hidden">
             <LogOut className="h-4 w-4 text-sidebar-foreground/50 hover:text-sidebar-foreground transition-colors" />
           </Link>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -21,7 +21,7 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/90 backdrop-blur-md">
       <div className="page-container flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 font-bold text-primary">
+        <Link="/" className="flex items-center gap-2 font-bold text-primary">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white">
             <Vote className="h-4 w-4" />
           </div>
@@ -34,9 +34,7 @@ export function Header() {
         {/* Desktop Nav */}
         <nav className="hidden items-center gap-6 md:flex">
           {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
+            <Link={link.href}
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               {link.label}
@@ -47,12 +45,12 @@ export function Header() {
         {/* Actions */}
         <div className="flex items-center gap-3">
           <ThemeToggle />
-          <Link href="/login" className="hidden sm:block">
+          <Link="/login" className="hidden sm:block">
             <Button variant="outline" size="sm">
               Student Login
             </Button>
           </Link>
-          <Link href="/admin" className="hidden sm:block">
+          <Link="/admin" className="hidden sm:block">
             <Button size="sm" className="bg-primary text-white hover:bg-primary/90">
               Admin
             </Button>
@@ -79,9 +77,7 @@ export function Header() {
                 </div>
                 <nav className="flex flex-col gap-3">
                   {navLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
+                    <Link={link.href}
                       onClick={() => setOpen(false)}
                       className="text-sm font-medium py-2 hover:text-primary transition-colors"
                     >
@@ -90,12 +86,12 @@ export function Header() {
                   ))}
                 </nav>
                 <div className="flex flex-col gap-2 border-t pt-4">
-                  <Link href="/login" onClick={() => setOpen(false)}>
+                  <Link="/login" onClick={() => setOpen(false)}>
                     <Button variant="outline" className="w-full">
                       Student Login
                     </Button>
                   </Link>
-                  <Link href="/admin" onClick={() => setOpen(false)}>
+                  <Link="/admin" onClick={() => setOpen(false)}>
                     <Button className="w-full bg-primary text-white hover:bg-primary/90">
                       Admin Portal
                     </Button>

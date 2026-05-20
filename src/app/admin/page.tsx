@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 import { ShieldCheck, Lock, User, Loader2 } from 'lucide-react';
 import { api } from '@/lib/mock-api';
 
@@ -10,7 +10,7 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,7 +18,7 @@ export default function AdminLoginPage() {
     setError('');
     try {
       await api.adminLogin(username, password);
-      router.push('/admin/dashboard');
+      navigate('/admin/dashboard');
     } catch (err) {
 
       setError('Invalid admin credentials');

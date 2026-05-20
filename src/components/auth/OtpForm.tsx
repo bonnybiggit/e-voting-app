@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import {
   InputOTP,
   InputOTPGroup,
@@ -12,7 +12,7 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 export function OtpForm() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
@@ -26,7 +26,7 @@ export function OtpForm() {
     await new Promise((r) => setTimeout(r, 1500));
     setLoading(false);
     toast.success("Identity verified! Redirecting to voting dashboard...");
-    router.push("/dashboard");
+    navigate("/dashboard");
   };
 
   const handleResend = async () => {
